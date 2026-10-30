@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basic English Grammar for Kids — Games</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Comic Sans MS', 'Chalkboard SE', system-ui, sans-serif; background: #FFF7E8; color: #263238; }
+  header { background: #0E7C86; color: #fff; padding: 16px; text-align: center; }
+  header h1 { font-size: 24px; }
+  header p { font-size: 15px; opacity: .92; margin-top: 3px; }
+  main { max-width: 820px; margin: 0 auto; padding: 16px 14px 24px; }
+  h2 { color: #0E7C86; font-size: 19px; margin: 18px 0 8px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 9px; }
+  a.game { flex: 1 1 150px; max-width: 190px; background: #fff; border: 3px solid #0E7C86; border-radius: 14px; padding: 10px 12px; text-decoration: none; color: #14343C; font-weight: 700; font-size: 15px; box-shadow: 0 2px 6px #00000014; }
+  a.game span { display: block; color: #C2185B; font-size: 12px; letter-spacing: .6px; margin-bottom: 2px; }
+  a.game:active { transform: scale(.97); }
+  .credit { text-align: center; color: #8A6508; font-size: 13px; margin-top: 22px; letter-spacing: 1px; font-weight: 700; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📗 Basic English Grammar for Kids</h1>
+  <p>Scan a QR code in the book — or pick a game here. Play with Miss Zara, Omar and Lily!</p>
+</header>
+<main>
+  <h2>Part 1 — Grammar Games</h2>
+  <div class="grid" id="topics"></div>
+  <h2>Part 2 — Composition Games</h2>
+  <div class="grid">
+    <a class="game" href="c-letters.html"><span>COMPOSITION</span>✉ Letters Game</a>
+    <a class="game" href="c-applications.html"><span>COMPOSITION</span>📄 Applications Game</a>
+    <a class="game" href="c-paragraphs.html"><span>COMPOSITION</span>¶ Paragraphs Game</a>
+    <a class="game" href="c-stories.html"><span>COMPOSITION</span>📖 Stories Game</a>
+  </div>
+  <div class="credit">✦ Prepared by: Zulfiqar Ali Sajid ✦</div>
+</main>
+<script>
+  const TITLES = ["Naming Words","One and Many","Action Words","Describing Words","Comparing Words",
+    "Words in Place of Names","My, Your, His, Her","This, That, These, Those","A, An and The",
+    "In, On, Under","How Words","Joining Words","Opposite Words","Same-Meaning Words","A Sentence",
+    "Capital Letters","Full Stop, Question Mark, Exclamation Mark","Asking Questions","Am, Is, Are",
+    "Was, Were","Every Day","Happening Now","Yesterday","Tomorrow","Telling Someone to Do Something"];
+  document.getElementById('topics').innerHTML = TITLES.map((t, i) =>
+    `<a class="game" href="t${i + 1}.html"><span>TOPIC ${i + 1}</span>${t}</a>`).join('');
+</script>
+</body>
+</html>
