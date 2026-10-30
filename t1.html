@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Naming Words Game — Basic English Grammar for Kids</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI Rounded', system-ui, sans-serif; background: #FFF7E8; color: #263238; min-height: 100vh; }
+  header { background: #0E7C86; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 5; }
+  header .ttl { font-weight: 800; font-size: 19px; letter-spacing: .3px; }
+  header .pill { background: #FFD93B; color: #14343C; border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: 13px; border: 2px solid #14343C; }
+  header .sp { flex: 1; }
+  .scorebox { background: #fff; color: #B8860B; font-weight: 800; border-radius: 999px; padding: 4px 12px; font-size: 16px; }
+  .tgl { background: #ffffff2b; border: 2px solid #ffffff88; color: #fff; border-radius: 999px; font-size: 18px; padding: 3px 11px; cursor: pointer; }
+  .tgl.off { opacity: .45; filter: grayscale(1); }
+  main { max-width: 760px; margin: 0 auto; padding: 14px; }
+  .stagebar { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .stagebar span { font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #E0E7EA; color: #546E7A; }
+  .stagebar span.on { background: #0E7C86; color: #fff; }
+  .stagebar span.done { background: #BFE8C8; color: #14532A; }
+  .hostrow { display: flex; gap: 12px; align-items: flex-start; }
+  .host-frame { position: relative; width: 168px; flex: none; border-radius: 18px; background: #FDF3E3; padding: 6px; box-shadow: 0 3px 10px #0000001c; }
+  .host-frame .imgwrap { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3/2; }
+  .host-frame img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FDF6EC; }
+  .mouth { position: absolute; left: 46.4%; top: 34.6%; width: 6.4%; height: 4.6%; background: #8E3B2F; border-radius: 50%; opacity: 0; transform-origin: center; pointer-events: none; }
+  .host-frame.speaking .mouth { opacity: .85; animation: talk .16s infinite alternate ease-in-out; }
+  @keyframes talk { from { transform: scaleY(.25); } to { transform: scaleY(1.15); } }
+  .host-frame.g-wave { animation: wave 1.1s ease-in-out 2; }
+  @keyframes wave { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-2.6deg); } 75% { transform: rotate(2.6deg); } }
+  .host-frame.g-nod { animation: nod .5s ease-in-out 2; }
+  @keyframes nod { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+  .host-frame.g-cheer { animation: cheer .55s ease-in-out 2; }
+  @keyframes cheer { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-11px); } }
+  .bubble { flex: 1; background: #fff; border: 3px solid #0E7C86; border-radius: 18px; padding: 12px 14px; font-size: 19px; line-height: 1.4; min-height: 86px; position: relative; box-shadow: 0 3px 10px #00000012; }
+  .bubble:before { content: ''; position: absolute; left: -15px; top: 30px; border: 8px solid transparent; border-right: 10px solid #0E7C86; }
+  .bubble .who { font-size: 12px; font-weight: 800; letter-spacing: 1.2px; color: #0E7C86; }
+  .panel { margin-top: 14px; background: #fff; border-radius: 20px; padding: 16px; box-shadow: 0 3px 12px #00000014; }
+  .bigbtn { display: inline-block; background: #C2185B; color: #fff; border: none; font-family: inherit; font-weight: 800; font-size: 22px; padding: 13px 30px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #7E0E3B; }
+  .bigbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 #7E0E3B; }
+  .bigbtn.dim { opacity: .45; pointer-events: none; }
+  .center { text-align: center; }
+  .startart { display: flex; gap: 10px; justify-content: center; align-items: flex-end; margin: 8px 0 4px; }
+  .startart img.z { width: 210px; border-radius: 16px; background: #FDF3E3; padding: 5px; }
+  .startart img.k { width: 170px; border-radius: 16px; background: #EFF8EE; padding: 5px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .wcard { width: calc(50% - 6px); max-width: 240px; background: #FFFDF7; border: 3px solid #90A4AE; border-radius: 16px; padding: 10px 8px; cursor: pointer; text-align: center; font-family: inherit; }
+  .wcard .pic { height: 92px; margin-bottom: 6px; }
+  .wcard .pic img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+  .wcard .w { font-size: 25px; font-weight: 800; color: #263238; }
+  .wcard:active { transform: scale(.97); }
+  .wcard.right { border-color: #2E8B45; background: #E8F9EC; box-shadow: 0 0 0 4px #2E8B4555; }
+  .wcard.wrong { border-color: #C9A227; background: #FFF6D6; animation: wiggle .35s ease-in-out; }
+  @keyframes wiggle { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-2.5deg); } 70% { transform: rotate(2.5deg); } }
+  .opts2 { display: flex; flex-wrap: wrap; gap: 12px; }
+  .optbtn { width: calc(50% - 6px); background: #FFFDF7; border: 3px solid #90A4AE; border-radius: 14px; padding: 12px; font-family: inherit; font-size: 20px; font-weight: 700; cursor: pointer; text-align: left; }
+  .optbtn b { color: #C2185B; margin-right: 6px; }
+  .optbtn.right { border-color: #2E8B45; background: #E8F9EC; }
+  .optbtn.wrong { border-color: #C9A227; background: #FFF6D6; animation: wiggle .35s ease-in-out; }
+  .sortcard { text-align: center; margin-bottom: 14px; }
+  .sortcard .bigword { display: inline-block; font-size: 38px; font-weight: 800; background: #FFF3C4; border: 3px dashed #B8860B; border-radius: 16px; padding: 8px 30px; }
+  .boxes { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sbox { width: calc(50% - 5px); border: 3px solid; border-radius: 16px; padding: 12px 10px; cursor: pointer; font-family: inherit; color: #fff; font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .sbox small { display: block; font-size: 13px; font-weight: 700; letter-spacing: 0; opacity: .92; margin-top: 2px; }
+  .sbox.right { box-shadow: 0 0 0 5px #2E8B4566; filter: brightness(1.12); }
+  .sbox.wrong { animation: wiggle .35s ease-in-out; filter: brightness(.92); }
+  .scenewrap { border-radius: 16px; background: #EAF6EC; padding: 7px; margin-bottom: 14px; }
+  .scenewrap img { width: 100%; display: block; border-radius: 10px; object-fit: contain; }
+  .qtext { font-size: 22px; font-weight: 800; margin-bottom: 14px; }
+  .qnum { display: inline-block; background: #C2185B; color: #fff; border-radius: 50%; width: 32px; height: 32px; text-align: center; line-height: 32px; font-size: 17px; margin-right: 8px; }
+  .endstars { font-size: 52px; letter-spacing: 6px; color: #E8A90C; text-shadow: 0 2px 0 #B8860B; }
+  .endscore { font-size: 27px; font-weight: 800; margin: 6px 0; }
+  .endline { font-size: 21px; color: #0E7C86; font-weight: 800; }
+  .credit { text-align: center; color: #8A6508; font-size: 13px; margin: 16px 0 6px; letter-spacing: 1px; font-weight: 700; }
+  .starburst { position: fixed; font-size: 40px; color: #E8A90C; pointer-events: none; z-index: 50; animation: burst .8s ease-out forwards; }
+  @keyframes burst { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.6) translateY(-46px); opacity: 0; } }
+  @media (max-width: 560px) { .host-frame { width: 128px; } .bubble { font-size: 17px; min-height: 76px; } .startart img.z { width: 150px; } .startart img.k { width: 122px; } }
+</style>
+</head>
+<body>
+<header>
+  <span class="pill">Topic 1</span>
+  <span class="ttl">Naming Words Game</span>
+  <span class="sp"></span>
+  <span class="scorebox">★ <span id="score">0</span> / 25</span>
+  <button class="tgl" id="musicTgl" title="Music on/off">🎵</button>
+  <button class="tgl" id="voiceTgl" title="Voice on/off">🗣️</button>
+</header>
+<main>
+  <div class="stagebar" id="stagebar">
+    <span data-s="0">Start</span><span data-s="1">Word Hunt</span><span data-s="2">Sorting</span><span data-s="3">Picture Nouns</span><span data-s="4">Miss Zara Asks</span><span data-s="5">Finish</span>
+  </div>
+  <div class="hostrow" id="hostrow" style="display:none">
+    <div class="host-frame" id="hostframe"><div class="imgwrap"><img src="img/zara.jpg" alt="Miss Zara"><div class="mouth"></div></div></div>
+    <div class="bubble"><div class="who">MISS ZARA</div><div id="bubbletext">Hello!</div></div>
+  </div>
+  <div class="panel" id="panel"></div>
+  <div class="credit">✦ Prepared by: Zulfiqar Ali Sajid ✦</div>
+</main>
+
+<script>
+"use strict";
+/* ================= LOCKED HOUSE STANDARDS ================= */
+const RATE = 0.85;                 /* speech rate — LOCKED at 0.85 */
+const MAXSCORE = 25;
+const PITCH = { calm: 1.05, happy: 1.15, praise: 1.28, question: 1.1, kind: 1.0 };
+window.__RATE = RATE;              /* test hook */
+
+let score = 0, voiceOn = true, musicOn = true;
+window.__game = { get score() { return score; } };
+const $ = s => document.querySelector(s);
+const panel = $('#panel'), bubble = $('#bubbletext'), hostframe = $('#hostframe');
+
+function setStage(n) {
+  document.querySelectorAll('#stagebar span').forEach(sp => {
+    const s = +sp.dataset.s;
+    sp.className = s === n ? 'on' : (s < n ? 'done' : '');
+  });
+}
+function setBubble(t) { bubble.textContent = t; }
+function gesture(name, times) {
+  hostframe.classList.remove('g-wave', 'g-nod', 'g-cheer');
+  void hostframe.offsetWidth;
+  if (name) hostframe.classList.add('g-' + name);
+}
+function updateScore() { $('#score').textContent = score; }
+function starBurst(el) {
+  const r = el.getBoundingClientRect();
+  const s = document.createElement('div');
+  s.className = 'starburst'; s.textContent = '★';
+  s.style.left = (r.left + r.width / 2 - 20) + 'px'; s.style.top = (r.top - 8) + 'px';
+  document.body.appendChild(s); setTimeout(() => s.remove(), 850);
+}
+
+/* ================= SPEECH ENGINE — Standard 13 =================
+   FIFO queue (no cancel-on-speak) · every advance gated on drain ·
+   taps mid-speech register + score at once · voice OFF releases
+   gates instantly · per-utterance watchdog 1.8s + 0.62s/word (4–25s). */
+let voice = null;
+function pickVoice() {
+  const vs = (window.speechSynthesis ? speechSynthesis.getVoices() : []);
+  if (!vs.length) return null;
+  return vs.find(v => /google us english/i.test(v.name))
+      || vs.find(v => /natural|neural/i.test(v.name) && /^en/i.test(v.lang))
+      || vs.find(v => /premium|enhanced/i.test(v.name) && /^en/i.test(v.lang))
+      || vs.find(v => v.lang === 'en-US')
+      || vs.find(v => v.lang === 'en-GB')
+      || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window) { voice = pickVoice(); speechSynthesis.onvoiceschanged = () => { voice = pickVoice(); }; }
+
+const sq = []; let speakingNow = false, curFinish = null;
+let drainWaiters = [];
+window.__speech = { get speaking() { return speakingNow; }, get queued() { return sq.length; } };
+
+function speak(text, mood) {
+  return new Promise(res => {
+    if (!voiceOn || !('speechSynthesis' in window)) { res(); return; }
+    sq.push({ text, mood: mood || 'calm', res });
+    pump();
+  });
+}
+function pump() {
+  if (speakingNow) return;
+  const item = sq.shift();
+  if (!item) { checkDrain(); return; }
+  speakingNow = true; hostframe.classList.add('speaking');
+  const u = new SpeechSynthesisUtterance(item.text);
+  u.rate = RATE; u.pitch = PITCH[item.mood] || 1.05;
+  if (voice) u.voice = voice;
+  const words = item.text.trim().split(/\s+/).length;
+  const wd = Math.min(25, Math.max(4, 1.8 + 0.62 * words));
+  let done = false;
+  const finish = () => {
+    if (done) return; done = true;
+    clearTimeout(timer); speakingNow = false; curFinish = null;
+    hostframe.classList.remove('speaking');
+    item.res(); pump();
+  };
+  const timer = setTimeout(finish, wd * 1000);   /* watchdog release */
+  curFinish = finish;
+  u.onend = finish; u.onerror = finish;
+  try { speechSynthesis.speak(u); } catch (e) { finish(); }
+}
+function speechIdle() {
+  return new Promise(res => {
+    if (!speakingNow && sq.length === 0) res();
+    else drainWaiters.push(res);
+  });
+}
+function checkDrain() {
+  if (!speakingNow && sq.length === 0 && drainWaiters.length) {
+    const w = drainWaiters.splice(0); w.forEach(r => r());
+  }
+}
+function flushSpeech() {           /* voice toggled OFF: release everything now */
+  if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch (e) {} }
+  while (sq.length) { const it = sq.shift(); it.res(); }
+  if (curFinish) { const f = curFinish; curFinish = null; f(); }
+  speakingNow = false; hostframe.classList.remove('speaking');
+  checkDrain();
+}
+
+/* ================= MUSIC (WebAudio, no files) ================= */
+let actx = null, musicTimer = null, noteIdx = 0;
+const MELODY = [523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 440.0];
+function playNote() {
+  if (!actx) return;
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'sine'; o.frequency.value = MELODY[noteIdx++ % MELODY.length];
+  g.gain.setValueAtTime(0.055, actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.42);
+  o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + 0.45);
+}
+function startMusic() {
+  if (!musicOn) return;
+  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
+  if (actx.state === 'suspended') actx.resume();
+  if (!musicTimer) musicTimer = setInterval(playNote, 460);
+}
+function stopMusic() { if (musicTimer) { clearInterval(musicTimer); musicTimer = null; } }
+function fanfare() {
+  if (!actx) return;
+  [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'triangle'; o.frequency.value = f;
+    const t = actx.currentTime + i * 0.16;
+    g.gain.setValueAtTime(0.09, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + 0.55);
+  });
+}
+
+$('#musicTgl').addEventListener('click', e => {
+  musicOn = !musicOn; e.currentTarget.classList.toggle('off', !musicOn);
+  if (musicOn) startMusic(); else stopMusic();
+});
+$('#voiceTgl').addEventListener('click', e => {
+  voiceOn = !voiceOn; e.currentTarget.classList.toggle('off', !voiceOn);
+  if (!voiceOn) flushSpeech();
+});
+
+/* ================= SHARED ANSWER FLOW ================= */
+const PRAISE = ['Well done!', 'Great job!', 'Wonderful!', 'Super work!', 'Yes! That is right!', 'Brilliant!'];
+const RETRY  = ['Good try! Try again.', 'Almost! Have another look.', 'You can do it! Try once more.'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+function wireAnswers(container, onCorrect) {
+  /* returns handler: correct -> +1 at once (even mid-speech), praise queues
+     behind the current line, advance only after the speech queue drains. */
+  let locked = false;
+  container.addEventListener('click', async ev => {
+    const btn = ev.target.closest('[data-a]');
+    if (!btn || locked) return;
+    if (btn.dataset.a === '1') {
+      locked = true;
+      score++; updateScore();
+      btn.classList.add('right'); starBurst(btn); gesture('cheer');
+      speak(pick(PRAISE), 'praise'); speak('You get one star!', 'happy');
+      container.querySelectorAll('[data-a]').forEach(b => b.style.pointerEvents = 'none');
+      await speechIdle();
+      onCorrect();
+    } else {
+      if (btn.dataset.tried) return;
+      btn.dataset.tried = '1';
+      btn.classList.add('wrong'); gesture('nod');
+      speak(pick(RETRY), 'kind');
+    }
+  });
+}
+
+/* ================= STAGE 0 — START ================= */
+function stageStart() {
+  setStage(0);
+  panel.innerHTML = `
+    <div class="center">
+      <div class="startart"><img class="z" src="img/zara.jpg" alt="Miss Zara"><img class="k" src="img/kids.jpg" alt="Omar and Lily"></div>
+      <h2 style="font-size:26px; margin:8px 0 4px;">Hello! I am Miss Zara.</h2>
+      <p style="font-size:18px; margin-bottom:14px;">Let's play the <b>Naming Words</b> game with Omar and Lily!</p>
+      <button class="bigbtn" id="startbtn">▶ Start</button>
+    </div>`;
+  $('#startbtn').addEventListener('click', async () => {
+    startMusic();
+    $('#hostrow').style.display = 'flex';
+    $('#startbtn').remove();
+    setBubble('Hello, children! A noun is a naming word. It names a person, a place, an animal or a thing.');
+    gesture('wave');
+    speak('Hello, children!', 'happy');
+    speak('A noun is a naming word. It names a person, a place, an animal or a thing.', 'calm');
+    panel.innerHTML = `<div class="center"><p style="font-size:19px; margin-bottom:14px;">Listen to Miss Zara… then tap the button!</p>
+      <button class="bigbtn dim" id="playbtn">Let's Play! 🎮</button></div>`;
+    await speechIdle();
+    const pb = $('#playbtn');
+    pb.classList.remove('dim');
+    pb.addEventListener('click', () => stageHunt(0));
+  });
+}
+
+/* ================= STAGE 1 — WORD HUNT (printed Activity A) ================= */
+const SPOT = { cat: 'spot-cat.jpg', run: 'spot-run.jpg', book: 'spot-book.jpg', happy: 'spot-happy.jpg', boy: 'spot-boy.jpg', jump: 'spot-jump.jpg', ball: 'spot-ball.jpg', sing: 'spot-sing.jpg' };
+const HUNT = [
+  { t: 'cat',  opts: ['cat', 'run', 'happy', 'sing'] },
+  { t: 'book', opts: ['jump', 'book', 'run', 'quickly'] },
+  { t: 'boy',  opts: ['happy', 'sing', 'boy', 'jump'] },
+  { t: 'ball', opts: ['run', 'ball', 'quickly', 'hop'] },
+  { t: 'dog',  opts: ['sing', 'hop', 'dog', 'happy'] },
+  { t: 'cup',  opts: ['jump', 'cup', 'run', 'sing'] },
+];
+function stageHunt(i) {
+  setStage(1);
+  const r = HUNT[i];
+  setBubble(`Word Hunt! Tap the naming word: ${r.t}.`);
+  gesture('nod');
+  speak(`Tap the naming word: ${r.t}.`, 'question');
+  panel.innerHTML = `<div class="chips" id="opts">${r.opts.map(w =>
+    `<button class="wcard" data-a="${w === r.t ? 1 : 0}">${SPOT[w] ? `<span class="pic"><img src="img/${SPOT[w]}" alt=""></span>` : ''}<span class="w">${w}</span></button>`).join('')}</div>`;
+  wireAnswers($('#opts'), () => { i + 1 < HUNT.length ? stageHunt(i + 1) : stageSort(0); });
+}
+
+/* ================= STAGE 2 — SORTING (printed Activity B) ================= */
+const SORT = [
+  { w: 'dog', g: 'animal' }, { w: 'mother', g: 'person' }, { w: 'table', g: 'thing' }, { w: 'park', g: 'place' },
+  { w: 'fish', g: 'animal' }, { w: 'girl', g: 'person' }, { w: 'cup', g: 'thing' }, { w: 'zoo', g: 'place' },
+];
+const GROUPS = [
+  { id: 'person', label: 'PERSON', shape: '★', color: '#7C4DBD' },
+  { id: 'place',  label: 'PLACE',  shape: '■', color: '#2E8B45' },
+  { id: 'animal', label: 'ANIMAL', shape: '▲', color: '#D96C06' },
+  { id: 'thing',  label: 'THING',  shape: '●', color: '#1B7FC1' },
+];
+function stageSort(i) {
+  setStage(2);
+  const it = SORT[i];
+  setBubble(`Sorting Game! Where does the word "${it.w}" go?`);
+  speak(`Where does the word ${it.w} go?`, 'question');
+  panel.innerHTML = `
+    <div class="sortcard"><span class="bigword">${it.w}</span></div>
+    <div class="boxes" id="opts">${GROUPS.map(g =>
+      `<button class="sbox" data-a="${g.id === it.g ? 1 : 0}" style="background:${g.color}; border-color:${g.color}">${g.shape} ${g.label}<small>tap the right box</small></button>`).join('')}</div>`;
+  wireAnswers($('#opts'), () => { i + 1 < SORT.length ? stageSort(i + 1) : stagePicture(0); });
+}
+
+/* ================= STAGE 3 — PICTURE NOUNS (printed Activity C) ================= */
+const PIC = [
+  { t: 'cow',     opts: ['cow', 'ball', 'tree', 'bench'] },
+  { t: 'dog',     opts: ['girl', 'dog', 'cow', 'house'] },
+  { t: 'tree',    opts: ['tree', 'bench', 'boy', 'ball'] },
+  { t: 'ball',    opts: ['dog', 'ball', 'flower', 'tree'] },
+  { t: 'bench',   opts: ['bench', 'teacher', 'cow', 'girl'] },
+  { t: 'teacher', opts: ['house', 'boy', 'teacher', 'dog'] },
+];
+function stagePicture(i) {
+  setStage(3);
+  const r = PIC[i];
+  setBubble(`Look at the park picture. Tap the word: ${r.t}.`);
+  gesture('nod');
+  speak(`Look at the picture. Tap the word: ${r.t}.`, 'question');
+  panel.innerHTML = `
+    <div class="scenewrap"><img src="img/scene.jpg" alt="A park scene"></div>
+    <div class="chips" id="opts">${r.opts.map(w =>
+      `<button class="wcard" data-a="${w === r.t ? 1 : 0}" style="max-width:170px"><span class="w">${w}</span></button>`).join('')}</div>`;
+  wireAnswers($('#opts'), () => { i + 1 < PIC.length ? stagePicture(i + 1) : stageQuiz(0); });
+}
+
+/* ================= STAGE 4 — MISS ZARA ASKS (printed quiz, verbatim) ================= */
+const QUIZ = [
+  { q: 'Which word is a naming word?',            opts: ['run', 'cat', 'happy', 'quickly'],        key: 1 },
+  { q: '"School" names a …',                      opts: ['person', 'place', 'animal', 'action'],   key: 1 },
+  { q: 'Which one names a person?',               opts: ['teacher', 'table', 'dog', 'garden'],     key: 0 },
+  { q: '"Ball" is a naming word for a …',         opts: ['place', 'person', 'thing', 'animal'],    key: 2 },
+  { q: 'Which word is NOT a naming word?',        opts: ['mother', 'park', 'jump', 'cow'],         key: 2 },
+];
+function stageQuiz(i) {
+  setStage(4);
+  const it = QUIZ[i];
+  setBubble(`Question ${i + 1}. ${it.q}`);
+  gesture('nod');
+  speak(`Question ${i + 1}. ${it.q.replace('…', '')}`, 'question');
+  panel.innerHTML = `
+    <div class="qtext"><span class="qnum">${i + 1}</span>${it.q}</div>
+    <div class="opts2" id="opts">${it.opts.map((o, j) =>
+      `<button class="optbtn" data-a="${j === it.key ? 1 : 0}"><b>${'ABCD'[j]})</b>${o}</button>`).join('')}</div>`;
+  wireAnswers($('#opts'), () => { i + 1 < QUIZ.length ? stageQuiz(i + 1) : stageEnd(); });
+}
+
+/* ================= END SCREEN ================= */
+function stageEnd() {
+  setStage(5);
+  const stars = score >= 20 ? 3 : score >= 12 ? 2 : 1;
+  setBubble('You did it! Now I know naming words!');
+  gesture('cheer');
+  speak('You did it! Now I know naming words!', 'praise');
+  fanfare();
+  panel.innerHTML = `
+    <div class="center">
+      <div class="startart"><img class="z" src="img/zara.jpg" alt="Miss Zara"><img class="k" src="img/kids.jpg" alt="Omar and Lily"></div>
+      <div class="endstars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
+      <div class="endscore" id="finalscore">You scored ${score} out of ${MAXSCORE}!</div>
+      <div class="endline">Now I know naming words!</div>
+      <p style="font-size:17px; margin:10px 0 16px;">A noun is a naming word. It names a person, a place, an animal or a thing.</p>
+      <button class="bigbtn" onclick="location.reload()">↻ Play Again</button>
+    </div>`;
+}
+
+stageStart();
+</script>
+</body>
+</html>
