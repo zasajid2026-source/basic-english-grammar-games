@@ -82,13 +82,13 @@
   <span class="pill">Topic 1</span>
   <span class="ttl">Naming Words Game</span>
   <span class="sp"></span>
-  <span class="scorebox">★ <span id="score">0</span> / 25</span>
+  <span class="scorebox">★ <span id="score">0</span> / 30</span>
   <button class="tgl" id="musicTgl" title="Music on/off">🎵</button>
   <button class="tgl" id="voiceTgl" title="Voice on/off">🗣️</button>
 </header>
 <main>
   <div class="stagebar" id="stagebar">
-    <span data-s="0">Start</span><span data-s="1">Word Hunt</span><span data-s="2">Sorting</span><span data-s="3">Picture Nouns</span><span data-s="4">Miss Zara Asks</span><span data-s="5">Finish</span>
+    <span data-s="0">Start</span><span data-s="1">Word Hunt</span><span data-s="2">Sorting</span><span data-s="3">Picture Nouns</span><span data-s="4">Practise: Name It!</span><span data-s="5">Miss Zara Asks</span><span data-s="6">Finish</span>
   </div>
   <div class="hostrow" id="hostrow" style="display:none">
     <div class="host-frame" id="hostframe"><div class="imgwrap"><img src="img/zara.jpg" alt="Miss Zara"><div class="mouth"></div></div></div>
@@ -102,7 +102,7 @@
 "use strict";
 /* ================= LOCKED HOUSE STANDARDS ================= */
 const RATE = 0.85;                 /* speech rate — LOCKED at 0.85 */
-const MAXSCORE = 25;
+const MAXSCORE = 30;
 const PITCH = { calm: 1.05, happy: 1.15, praise: 1.28, question: 1.1, kind: 1.0 };
 window.__RATE = RATE;              /* test hook */
 
@@ -358,10 +358,32 @@ function stagePicture(i) {
     <div class="scenewrap"><img src="img/scene.jpg" alt="A park scene"></div>
     <div class="chips" id="opts">${r.opts.map(w =>
       `<button class="wcard" data-a="${w === r.t ? 1 : 0}" style="max-width:170px"><span class="w">${w}</span></button>`).join('')}</div>`;
-  wireAnswers($('#opts'), () => { i + 1 < PIC.length ? stagePicture(i + 1) : stageQuiz(0); });
+  wireAnswers($('#opts'), () => { i + 1 < PIC.length ? stagePicture(i + 1) : stagePractise(0); });
 }
 
-/* ================= STAGE 4 — MISS ZARA ASKS (printed quiz, verbatim) ================= */
+
+/* ================= STAGE 4 — PRACTISE: NAME IT! (game-only stage) ================= */
+const PRACTISE = [
+  { s: 'I see a ___ in the park.',  ans: 'dog',    opts: ['dog', 'run', 'happy', 'quickly'] },
+  { s: 'Lily has a new ___.',       ans: 'book',   opts: ['sing', 'book', 'jump', 'quickly'] },
+  { s: 'The ___ is in the garden.', ans: 'cat',    opts: ['happy', 'cat', 'sing', 'run'] },
+  { s: 'We go to ___ every day.',   ans: 'school', opts: ['school', 'sing', 'happy', 'run'] },
+  { s: 'The ___ is on the table.',  ans: 'cup',    opts: ['jump', 'sing', 'cup', 'happy'] },
+];
+function stagePractise(i) {
+  setStage(4);
+  const r = PRACTISE[i];
+  setBubble(`Name it in a sentence! ${r.s.replace('___', '…')}`);
+  gesture('nod');
+  speak(r.s.replace('___', 'blank') + ' Which naming word fits?', 'question');
+  panel.innerHTML = `
+    <div class="qtext">${r.s.replace('___', '<span style="color:#C2185B">________</span>')}</div>
+    <div class="chips" id="opts">${r.opts.map(w =>
+      `<button class="wcard" data-a="${w === r.ans ? 1 : 0}" style="max-width:170px"><span class="w">${w}</span></button>`).join('')}</div>`;
+  wireAnswers($('#opts'), () => { i + 1 < PRACTISE.length ? stagePractise(i + 1) : stageQuiz(0); });
+}
+
+/* ================= STAGE 5 — MISS ZARA ASKS (printed quiz, verbatim) ================= */
 const QUIZ = [
   { q: 'Which word is a naming word?',            opts: ['run', 'cat', 'happy', 'quickly'],        key: 1 },
   { q: '"School" names a …',                      opts: ['person', 'place', 'animal', 'action'],   key: 1 },
@@ -370,7 +392,7 @@ const QUIZ = [
   { q: 'Which word is NOT a naming word?',        opts: ['mother', 'park', 'jump', 'cow'],         key: 2 },
 ];
 function stageQuiz(i) {
-  setStage(4);
+  setStage(5);
   const it = QUIZ[i];
   setBubble(`Question ${i + 1}. ${it.q}`);
   gesture('nod');
@@ -384,8 +406,8 @@ function stageQuiz(i) {
 
 /* ================= END SCREEN ================= */
 function stageEnd() {
-  setStage(5);
-  const stars = score >= 20 ? 3 : score >= 12 ? 2 : 1;
+  setStage(6);
+  const stars = score >= 24 ? 3 : score >= 15 ? 2 : 1;
   setBubble('You did it! Now I know naming words!');
   gesture('cheer');
   speak('You did it! Now I know naming words!', 'praise');
